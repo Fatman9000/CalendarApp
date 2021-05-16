@@ -4,14 +4,10 @@
     <div class="container-sm">
         <div class="row justify-content-md-left">
             <div class="col-md-auto">
-                <form action="/validate" method="POST">
+                <form action="/validate" id="InputUser" method="POST">
                     <div class="mb-3">
                         <label for="InputEmail1" class="form-label">Username</label>
-                        <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp">
-                    </div>
-                    <div class="mb-3">
-                        <label for="InputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="InputPassword1">
+                        <input type="email" class="form-control" id="InputEmail" name="username" aria-describedby="emailHelp">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
