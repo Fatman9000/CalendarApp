@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    
+{{ selected_date }}
+<form action="/calendar" id="input-time" method="POST">
+    <label for="select-time">Choose a time for your event:</label>
+    <input type="time" id="select-time" name="select-time" min="00:00" max="24:00" required>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
 {% endblock content %}

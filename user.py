@@ -35,3 +35,16 @@ class User(object):
     @staticmethod
     def login(username):
         session["username"] = username
+
+    @staticmethod
+    def get_user_date(date):
+        user_date = db.calendarData.find_one({"date": date})
+        # datetime.date.strftime()
+        if user_date is not None:
+            return (user_date["date"])
+
+    @staticmethod
+    def store_user_data(date, name):
+        # db.calendarData.update_one({"username" : name}, {})
+        pass
+        

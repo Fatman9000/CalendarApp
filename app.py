@@ -1,3 +1,5 @@
+import datetime
+import re
 from user import User
 from flask import (Flask, flash, redirect, render_template, request, session,
                    url_for)
@@ -22,8 +24,6 @@ def home_page():
 def user_validation():
     username = request.form["username"]
     User.login(username)
-    print(session["username"])
-    # return redirect("/")
     if User.login_valid(username):
         return redirect("/calendar")
     else:
@@ -38,4 +38,8 @@ def date_pick():
 
 @app.route("/edit", methods=["GET", "POST"])
 def date_edit():
-    pass
+    # user_date = datetime.date.fromisoformat(request.form["date"])
+    user_date = request.form["date"]
+    # User.store_user_data(user_date, session["username"])
+    # events_in_db = 
+    return render_template("edit.html", selected_date=user_date)
