@@ -22,9 +22,9 @@ def home_page():
 
 @app.route("/validate", methods=["GET", "POST"])
 def user_validation():
-    username = request.form["username"]
-    User.login(username)
-    if User.login_valid(username):
+    user_name = request.form["user_name"]
+    User.login(user_name)
+    if User.login_valid(user_name):
         return redirect("/calendar")
     else:
         return redirect("/")
@@ -32,7 +32,7 @@ def user_validation():
 
 @app.route("/calendar", methods=["GET", "POST"])
 def date_pick():
-    print(session["username"])
+    # print(session["user_name"])
     return render_template("calendar.html")
 
 
@@ -40,6 +40,14 @@ def date_pick():
 def date_edit():
     # user_date = datetime.date.fromisoformat(request.form["date"])
     user_date = request.form["date"]
-    # User.store_user_data(user_date, session["username"])
+    # print(session["user_date"])
+    User.store_user_date(user_date, session["user_name"])
     # events_in_db = 
     return render_template("edit.html", selected_date=user_date)
+
+@app.route("/save", methods=["GET", "POST"])
+def save():
+    user_time = request.form["time"]
+    user_data = request.form["data"]
+    User.store_user_time(session["user_name"],user_time, user_data)
+    return redirect("/calendar")

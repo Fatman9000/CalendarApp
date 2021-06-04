@@ -10,31 +10,31 @@ db = client.local
 
 
 class User(object):
-    def __init__(self, username):
-        self.username = username
+    def __init__(self, user_name):
+        self.username = user_name
 
     @classmethod
-    def get_by_name(cls, username):
-        data = db.calendarData.find_one({"username": username})
+    def get_by_name(cls, user_name):
+        data = db.calendarData.find_one({"username": user_name})
         if data is not None:
             return (data["username"])
 
     @staticmethod
-    def create_user(username):
-        db.calendarData.insert_one({"username": username})
+    def create_user(user_name):
+        db.calendarData.insert_one({"username": user_name})
 
     @staticmethod
-    def login_valid(username):
-        user = User.get_by_name(username)
+    def login_valid(user_name):
+        user = User.get_by_name(user_name)
         print(user)
         if user is None:
-            User.create_user(username)
-            user = User.get_by_name(username)
-        return user == username
+            User.create_user(user_name)
+            user = User.get_by_name(user_name)
+        return user == user_name
 
     @staticmethod
-    def login(username):
-        session["username"] = username
+    def login(user_name):
+        session["user_name"] = user_name
 
     @staticmethod
     def get_user_date(date):
@@ -44,7 +44,12 @@ class User(object):
             return (user_date["date"])
 
     @staticmethod
-    def store_user_data(date, name):
-        # db.calendarData.update_one({"username" : name}, {})
-        pass
-        
+    def store_user_date(date, name):
+        check = db.calendarData.find_one({"$and": [{"username" : name}, {date : []}]})
+        if check is not None:
+            db.calendarData.update_one({"username" : name},{"$set": {date : []}})
+    
+    @staticmethod
+    def store_user_time(name, time, data="Empty"):
+        user_date = session["user_date"]
+        db.calendarData.update_one({"username" : name} ,{"$push":  {user_date : {time : data}}})
