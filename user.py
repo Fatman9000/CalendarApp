@@ -37,19 +37,18 @@ class User(object):
         session["user_name"] = user_name
 
     @staticmethod
-    def get_user_date(date):
-        user_date = db.calendarData.find_one({"date": date})
+    def get_user_date():
+        user_date = db.calendarData.find_one({"$and": [{"username": session["user_name"]}, {session["user_date"] : {"$exists" : "true"}}]})
         # datetime.date.strftime()
         if user_date is not None:
-            return (user_date["date"])
+            return (user_date[session["user_date"]])
 
     @staticmethod
     def store_user_date(date, name):
-        check = db.calendarData.find_one({"$and": [{"username" : name}, {date : []}]})
+        check = db.calendarData.find_one({"$and": [{"username": name}, {date: []}]})
         if check is not None:
-            db.calendarData.update_one({"username" : name},{"$set": {date : []}})
-    
+            db.calendarData.update_one({"username": name}, {"$set": {date: []}})
+
     @staticmethod
     def store_user_time(name, time, data="Empty"):
-        user_date = session["user_date"]
-        db.calendarData.update_one({"username" : name} ,{"$push":  {user_date : {time : data}}})
+        db.calendarData.update_one({"username": name}, {"$push":  {session["user_date"]: {time: data}}})

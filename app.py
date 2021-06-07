@@ -1,3 +1,4 @@
+from collections import UserDict
 import datetime
 import re
 from user import User
@@ -32,22 +33,20 @@ def user_validation():
 
 @app.route("/calendar", methods=["GET", "POST"])
 def date_pick():
-    # print(session["user_name"])
     return render_template("calendar.html")
 
 
 @app.route("/edit", methods=["GET", "POST"])
 def date_edit():
-    # user_date = datetime.date.fromisoformat(request.form["date"])
-    user_date = request.form["date"]
-    # print(session["user_date"])
-    User.store_user_date(user_date, session["user_name"])
-    # events_in_db = 
-    return render_template("edit.html", selected_date=user_date)
+    session["user_date"] = request.form["date"]
+    User.store_user_date(session["user_date"], session["user_name"])
+    events_in_db = User.get_user_date()
+    return render_template("edit.html", selected_date=session["user_date"], events=events_in_db)
+
 
 @app.route("/save", methods=["GET", "POST"])
 def save():
     user_time = request.form["time"]
     user_data = request.form["data"]
-    User.store_user_time(session["user_name"],user_time, user_data)
+    User.store_user_time(session["user_name"], user_time, user_data)
     return redirect("/calendar")

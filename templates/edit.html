@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-{{ selected_date }}
-<form action="/save" id="input-time" method="POST">
-    <label for="time">Choose a time for your event:</label>
-    <input type="time" id="time" name="time" min="00:00" max="24:00" required>
-    <div>
-        <label for="data">Enter event details:</label>
-        <input type="text" id="data" name="data">
-        <button type="submit" class="btn btn-primary">Save</button>
+
+<label for="date">Events for {{ selected_date }}</label>
+<div>
+<label for="events">
+    {% for item in events %}
+    {{ item }}<br>
+    {% endfor %}
+</label>
 </div>
-    
+<form action="/save" id="input-time" method="POST">
+    <label for="time" class="form-label">Choose a time for your event:</label>
+    <input type="time" id="time" name="time" min="00:00" max="24:00" required>
+    <div class="form-floating">
+        <input class="form-control" id="data" name="data" placeholder="Enter event details here"
+            style="width: 400px;"></textarea>
+        <label for="data">Enter event details here</label>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
 </form>
 {% endblock content %}
