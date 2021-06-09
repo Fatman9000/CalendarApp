@@ -1,3 +1,4 @@
+from collections import UserDict
 import datetime
 import uuid
 
@@ -39,7 +40,6 @@ class User(object):
     @staticmethod
     def get_user_date():
         user_date = db.calendarData.find_one({"$and": [{"username": session["user_name"]}, {session["user_date"] : {"$exists" : "true"}}]})
-        # datetime.date.strftime()
         if user_date is not None:
             return (user_date[session["user_date"]])
 
