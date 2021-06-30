@@ -49,5 +49,8 @@ def date_edit():
 def save():
     user_time = request.form["time"]
     user_data = request.form["data"]
-    User.store_user_time(session["user_name"], user_time, user_data)
+    to_be_removed = request.form.getlist("remove_event")
+    User.delete_user_time(session["user_name"], session["user_date"], to_be_removed)
+    if user_time != "" and user_data != "":
+        User.store_user_time(session["user_name"], user_time, user_data)
     return redirect("/calendar")

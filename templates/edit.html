@@ -1,34 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container-fluid">
-    <div class="container-sm">
-        {% if events is not none %}
-        <label for="date">Events for {{ selected_date }}</label>
-        <div>
+<form action="/save" id="input-time" method="POST">
+    <div class="container-fluid">
+        <div class="container-sm">
+            {% if events is not none %}
+            <label for="date">Events for {{ selected_date }}</label><br>
+            Check events for removal
+            <div>
                 <label for="events">
                     {% for item in events %}
-                    {{item | tojson}} <button type="button" class="btn-close" aria-label="Remove event"onclick="alert('Event removed')"></button><br>
+                    <li>{{item | tojson}}  <input type="checkbox" value="{{ item }}" id="remove_event" name="remove_event"></li>
                     {% endfor %}
-                </label>
-            </form>
-        </div>
-        {% else %}
-        <div>
-            <label for="date">No events for {{ selected_date }}</label>
-        </div>
-        {% endif %}
-
-        <form action="/save" id="input-time" method="POST">
-            <label for="time" class="form-label">Choose a time for your event:</label>
-            <input type="time" id="time" name="time" min="00:00" max="24:00" required>
-            <div class="form-floating">
-                <input class="form-control" id="data" name="data" placeholder="Enter event details here"
-                    style="width: 400px;"></textarea>
-                <label for="data">Enter event details here</label>
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-        </form>
+                   
+                    </label>
+</form>
+</div>
+{% else %}
+<div>
+    <label for="date">No events for {{ selected_date }}</label>
+</div>
+{% endif %}
+    <label for="time" class="form-label">Choose a time for your event:</label>
+    <input type="time" id="time" name="time" min="00:00" max="24:00">
+    <div class="form-floating">
+        <input class="form-control" id="data" name="data" placeholder="Enter event details here"
+            style="width: 400px;"></textarea>
+        <label for="data">Enter event details here</label>
+        <button type="submit" class="btn btn-primary">Save</button>
     </div>
+</form>
+</div>
 </div>
 
 {% endblock content %}

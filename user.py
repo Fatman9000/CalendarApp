@@ -1,5 +1,6 @@
 from collections import UserDict
 import datetime
+import json
 import uuid
 
 from flask import session
@@ -51,4 +52,12 @@ class User(object):
 
     @staticmethod
     def store_user_time(name, time, data="Empty"):
-        db.calendarData.update_one({"username": name}, {"$push":  {session["user_date"]: {time: data}}})
+        db.calendarData.update_one({"username": name}, {"$push": {session["user_date"]: {time: data}}})
+
+    @staticmethod
+    def delete_user_time(name, date, times):
+        for item in times:
+            item = item.replace("\'",'"')
+            json_obj = json.loads(item)
+            for key, value in json_obj.items():
+                db.calendarData.update_one({"username": name}, {"$pull": {date : {key: value}}})
