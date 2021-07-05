@@ -1,15 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-{% if redirect %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Event created</strong>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endif %}
 <form action="/edit" id="inputCalendar" method="POST">
-    <label for="inputCalendar">Please choose a date</label>
-    <input type="date" name="date" id="inputDate">
-
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="container-fluid">
+        <div class="container-sm">
+            <label for="inputCalendar">Please choose a date</label>
+            <input type="date" name="date" id="inputDate">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
 </form>
 {% endblock %}
