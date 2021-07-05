@@ -5,31 +5,47 @@
         <div class="container-sm">
             {% if events is not none %}
             <label for="date">Events for {{ selected_date }}</label><br>
-            Check events for removal
+            Click the X to remove events
             <div>
                 <label for="events">
                     {% for item in events %}
-                    <li>{{item | tojson}}  <input type="checkbox" value="{{ item }}" id="remove_event" name="remove_event"></li>
+                    <li class="lead">{{item | tojson}} <button type="submit" class="btn-close" aria-label="Close"
+                            value="{{ item }}" id="remove_event" name="remove_event"></li>
                     {% endfor %}
-                   
-                    </label>
-</form>
-</div>
-{% else %}
-<div>
-    <label for="date">No events for {{ selected_date }}</label>
-</div>
-{% endif %}
-    <label for="time" class="form-label">Choose a time for your event:</label>
-    <input type="time" id="time" name="time" min="00:00" max="24:00">
-    <div class="form-floating">
-        <input class="form-control" id="data" name="data" placeholder="Enter event details here"
-            style="width: 400px;"></textarea>
-        <label for="data">Enter event details here</label>
-        <button type="submit" class="btn btn-primary">Save</button>
+                </label>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div>
+        <label for="date">No events for {{ selected_date }}</label>
+    </div>
+    {% endif %}
+    <div class="container-fluid">
+        <div class="container-sm">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event_modal">
+                Create new event
+            </button>
+        </div>
+    </div>
+    <div class="modal fade" id="event_modal" tabindex="-1" aria-labelledby="event_modal_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="event_modal_label">Chose a time for your event:</h5>
+                    <input type="time" id="time" name="time" min="00:00" max="24:00">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control" id="data" name="data" placeholder="Enter event details here"
+                        style="width: 400px;"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
-</div>
-</div>
-
 {% endblock content %}
