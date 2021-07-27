@@ -28,7 +28,6 @@ class User(object):
     @staticmethod
     def login_valid(user_name):
         user = User.get_by_name(user_name)
-        print(user)
         if user is None:
             User.create_user(user_name)
             user = User.get_by_name(user_name)

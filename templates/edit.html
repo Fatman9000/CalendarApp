@@ -5,11 +5,11 @@
         <div class="container-sm">
             {% if events is not none %}
             <label for="date">Events for {{ selected_date }}</label><br>
-            Click the X to remove events
-            <div>
+            Click the X to remove an event
+            <div class="form-label">
                 <label for="events">
                     {% for item in events %}
-                    <li class="lead">{{item | tojson}} <button type="submit" class="btn-close" aria-label="Close"
+                    <li class="lead">{{ item }} <button type="submit" class="btn-close" aria-label="Close"
                             value="{{ item }}" id="remove_event" name="remove_event"></li>
                     {% endfor %}
                 </label>
@@ -17,12 +17,13 @@
         </div>
     </div>
     {% else %}
-    <div>
+    </div>
+    <div class="container-fluid">
+        <div class="container-sm">
+    <div class="form-label">
         <label for="date">No events for {{ selected_date }}</label>
     </div>
     {% endif %}
-    <div class="container-fluid">
-        <div class="container-sm">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event_modal">
                 Create new event
             </button>
@@ -37,7 +38,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input class="form-control" id="data" name="data" placeholder="Enter event details here"
+                    <textarea class="form-control" id="data" name="data" placeholder="Enter event details here"
                         style="width: 400px;"></textarea>
                 </div>
                 <div class="modal-footer">

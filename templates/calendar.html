@@ -3,9 +3,15 @@
 <form action="/edit" id="inputCalendar" method="POST">
     <div class="container-fluid">
         <div class="container-sm">
-            <label for="inputCalendar">Please choose a date</label>
-            <input type="date" name="date" id="inputDate">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="row justify-content-md-left">
+                <div class="col-md-auto">
+                    <div class="mb-3">
+                        <label for="inputCalendar" class="form-label">Please choose a date</label>
+                        <input type="date" class="form-control" name="date" id="inputDate">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>

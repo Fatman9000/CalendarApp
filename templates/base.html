@@ -29,7 +29,15 @@
           </li>
         </ul>
       </div>
+      <div class="row justify-content-md-right">
+        <div class="col-md-auto">
+          <form action="/search" id="search" method="POST">
+            <input type="search" class="form-control" id="search_term" name="search_term">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Search</button>
     </div>
+    </form>
   </nav>
   {% endblock head %}
 </head>
