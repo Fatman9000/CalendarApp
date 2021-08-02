@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if search_results is not none %}
+    {% for result in search_results %}
+        <li style="margin-left: 20px;">{{result}}, {{ search_results[result] }}</li>
+    {% endfor %}
+{% endif %}
+{% endblock content %}

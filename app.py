@@ -5,7 +5,6 @@ import json
 from user import User
 from flask import (Flask, flash, redirect, render_template, request, session,
                    url_for)
-import calendar_app
 from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -61,3 +60,22 @@ def save():
     if user_time != "" and user_data != "":
         User.store_user_time(session["user_name"], user_time, user_data)
     return redirect("/edit")
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    search_term = request.form["search_term"]
+    results = User.search_user_entries(search_term)
+    print(results)
+    # del results["_id"]
+    # del results["username"]
+    # matching_results = {}
+    # print(results)
+
+    # for k in results:
+    #     for v in results[k]:
+    #         if search_term in v.values():
+    #             print(search_term,v)
+    #             matching_results.setdefault(k,v)
+    # print(matching_results)
+
+    return render_template("search.html", search_results=results)

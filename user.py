@@ -1,4 +1,4 @@
-from collections import UserDict
+
 import datetime
 import json
 import uuid
@@ -41,17 +41,25 @@ class User(object):
     def get_user_date():
         user_date = db.calendarData.find_one({"$and": [{"username": session["user_name"]}, {session["user_date"] : {"$exists" : "true"}}]})
         if user_date is not None:
-            return (user_date[session["user_date"]])
+            return(user_date[session["user_date"]])
+
+    @staticmethod
+    def search_user_entries(search_term):
+        print(search_term)
+        user_entries = db.calendarData.find({ "$text" : { "$search": search_term}})
+        if user_entries is not None:
+            return(user_entries)
 
     @staticmethod
     def store_user_date(date, name):
         check = db.calendarData.find_one({"$and": [{"username": name}, {date: []}]})
         if check is not None:
             db.calendarData.update_one({"username": name}, {"$set": {date: []}})
+        db.calendarData.create_index( { "event_desc" : "text" })
 
     @staticmethod
     def store_user_time(name, time, data="Empty"):
-        db.calendarData.update_one({"username": name}, {"$push": {session["user_date"]: {time: data}}})
+        db.calendarData.update_one({"username": name}, {"$push": {session["user_date"]: [{"event_time" : time }, {"event_desc" : data}]}})
 
     @staticmethod
     def delete_user_time(name, date, times):
