@@ -5,7 +5,7 @@ import uuid
 
 from flask import session
 
-from pymongo import MongoClient
+from pymongo import MongoClient, TEXT
 
 client = MongoClient("mongodb://localhost:27017")
 db = client.local
@@ -46,20 +46,26 @@ class User(object):
     @staticmethod
     def search_user_entries(search_term):
         print(search_term)
-        user_entries = db.calendarData.find({ "$text" : { "$search": search_term}})
+        user_entries = db.calendarData.find({"event_desc": search_term})
         if user_entries is not None:
             return(user_entries)
 
     @staticmethod
     def store_user_date(date, name):
-        check = db.calendarData.find_one({"$and": [{"username": name}, {date: []}]})
+        check = db.calendarData.find_one({"$and": [{"username": name}, {"user_date" : {date : []}}]})
         if check is not None:
-            db.calendarData.update_one({"username": name}, {"$set": {date: []}})
-        db.calendarData.create_index( { "event_desc" : "text" })
+            db.calendarData.update_one({"username": name}, {"$set": {"user_date": {date: []}}})
+        
+        # print(db.calendarData.index_information())
+        # db.calendarData.create_index([('event_desc', 'text')])
 
     @staticmethod
     def store_user_time(name, time, data="Empty"):
-        db.calendarData.update_one({"username": name}, {"$push": {session["user_date"]: [{"event_time" : time }, {"event_desc" : data}]}})
+        user_date = session["user_date"]
+        # fix this
+        db.calendarData.update_one({"username": name}, {"$push": {f"user_date.{user_date}": 
+                               {"event_time": time, "event_desc": data}}})
+        # db.calendarData.update_one}})
 
     @staticmethod
     def delete_user_time(name, date, times):

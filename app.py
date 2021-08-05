@@ -39,7 +39,7 @@ def date_pick():
 @app.route("/edit", methods=["GET", "POST"])
 def date_edit():
     try:
-        session["user_date"] = request.form["date"]
+        session["user_date"] = request.form["user_date"]
     except:
         pass
     User.store_user_date(session["user_date"], session["user_name"])
