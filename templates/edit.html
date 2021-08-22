@@ -20,13 +20,19 @@
     </div>
     <div class="container-fluid">
         <div class="container-sm">
-    <div class="form-label">
-        <label for="date">No events for {{ selected_date }}</label>
+            <div class="form-label">
+                <label for="date">No events for {{ selected_date }}</label>
+            </div>
+        </div>
     </div>
     {% endif %}
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event_modal">
-                Create new event
-            </button>
+    <div class="container-fluid">
+        <div class="container-sm">
+            <div class="form-label">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event_modal">
+                    Create new event
+                </button>
+            </div>
         </div>
     </div>
     <div class="modal fade" id="event_modal" tabindex="-1" aria-labelledby="event_modal_label" aria-hidden="true">
