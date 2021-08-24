@@ -44,10 +44,12 @@ def date_edit():
         pass
     User.store_user_date(session["user_date"], session["user_name"])
     events_in_db = User.get_user_date()
-    if events_in_db == []:
+    print(events_in_db)
+    try:
+        return render_template("edit.html", selected_date=session["user_date"], events=events_in_db[session["user_date"]])
+    except:   
         return render_template("edit.html", selected_date=session["user_date"], events=None)
-    else:
-        return render_template("edit.html", selected_date=session["user_date"], events=events_in_db)
+        
         
 
 
@@ -64,8 +66,8 @@ def save():
 @app.route("/search", methods=["GET", "POST"])
 def search():
     search_term = request.form["search_term"]
-    results = User.search_user_entries(search_term)
-    print(results)
+    result = User.search_user_entries(search_term)
+    print(result)
     # del results["_id"]
     # del results["username"]
     # matching_results = {}
