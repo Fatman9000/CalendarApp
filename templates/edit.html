@@ -9,8 +9,8 @@
             <div class="form-label">
                 <label for="events">
                     {% for item in events %}
-                    <li class="lead">{{ item }} <button type="submit" class="btn-close" aria-label="Close"
-                            value="{{ item }}" id="remove_event" name="remove_event"></li>
+                    <li class="lead">{{ item.events }} <button type="submit" class="btn-close" aria-label="Close"
+                            value="{{ item.events }}" id="remove_event" name="remove_event"></li>
                     {% endfor %}
                 </label>
             </div>
@@ -50,7 +50,9 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save</button>
+                    <input hidden id="date_input" value="{{ selected_date }}">
                 </div>
+                
             </div>
         </div>
     </div>

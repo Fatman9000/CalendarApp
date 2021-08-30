@@ -38,23 +38,26 @@ class User(object):
         session["user_name"] = user_name
 
     @staticmethod
-    def get_user_date():
-        user_date = db.calendarData.find_one({"$and": [{"username": session["user_name"]}, {"user_date" : {"$exists" : "true"}}]})
-        if user_date is not None:
-            return(user_date["user_date"])
+    def get_user_date(selected_date):
+        return_date = db.calendarData.find_one({"$and": [{"username": session["user_name"]}, {"user_date.date" : {"$exists" : "true"}}]})
+        print(return_date)
+        if return_date is not None:
+            return(return_date["user_date"])
 
     @staticmethod
     def search_user_entries(search_term):
+        # db.calendarData.create_index([('event_desc', TEXT)])
         print(search_term)
-        user_entries = db.calendarData.find({"event_desc": search_term})
+        user_entries = db.calendarData.find({"$text":{"$search": "meeting"}})
+        print(user_entries)
         if user_entries is not None:
             return(user_entries)
 
     @staticmethod
     def store_user_date(date, name):
-        check = db.calendarData.find_one({"$and": [{"username": name}, {"user_date" : {date : []}}]})
-        if check is not None:
-            db.calendarData.update_one({"username": name}, {"$set": {"user_date": {date: []}}})
+        # check = db.calendarData.find_one({"$and": [{"username": name}, {"user_date" : {date : []}}]})
+        # if check is not None:
+            db.calendarData.update_one({"username": name}, {"$push": {"user_date": [{"date" : date}]}})
         
         # print(db.calendarData.index_information())
         # db.calendarData.create_index([('event_desc', 'text')])
@@ -62,8 +65,9 @@ class User(object):
     @staticmethod
     def store_user_time(name, time, data="Empty"):
         user_date = session["user_date"]
-        db.calendarData.update_one({"username": name}, {"$push": {f"user_date.{user_date}": 
-                               {"event_time": time, "event_desc": data}}})
+        # db.calendarData.update_one({"$and" : [{"username": name}, {"user_date.date" : user_date}],
+        #  {"$push": {f"user_date.": 
+        #                        {"event_time": time, "event_desc": data}}})
         # db.calendarData.update_one}})
 
     @staticmethod
