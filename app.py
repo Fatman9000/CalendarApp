@@ -31,36 +31,33 @@ def user_validation():
         return redirect("/")
 
 
-@app.route("/calendar", methods=["GET"])
-def date_pick():
-    return render_template("calendar.html")
+# @app.route("/calendar", methods=["GET"])
+# def date_pick():
+#     return render_template("calendar.html")
 
 
-@app.route("/edit", methods=["GET", "POST"])
+@app.route("/calendar", methods=["GET", "POST"])
 def date_edit():
-    # try:
-    #     session["user_date"] = request.form["user_date"]
-    # except:
-    #     pass
-    session["user_date"] = request.form["user_date"]
-    my_var = request.form["user_date"] if request.form["user_date"] else None
-    # User.store_user_date(my_var, session["user_name"])
-    events_in_db = User.get_user_date(my_var)
+    # session["user_date"] = request.form["user_datetime"]
+    # my_var = request.form["user_datetime"] if request.form["user_datetime"] else None
+    events_in_db = User.get_user_date()
     print(events_in_db)
-    return render_template("edit.html", selected_date=my_var, events=events_in_db)
+    return render_template("edit.html", events=events_in_db)
+
       
         
 
 
 @app.route("/save", methods=["GET", "POST"])
 def save():
-    user_time = request.form["time"]
     user_data = request.form["data"]
+    selected_date = request.form["user_datetime"]
     to_be_removed = request.form.getlist("remove_event")
-    # User.delete_user_time(session["user_name"], session["user_date"], to_be_removed)
-    if user_time and user_data:
-        User.store_user_time(session["user_name"], user_time, user_data)
-    events_in_db = User.get_user_date(session["user_date"])
+    User.delete_user_time(session["user_name"], to_be_removed)
+    if user_data:
+        User.store_user_date(selected_date, session["user_name"], user_data)
+        # User.store_user_time(session["user_name"], user_time, user_data)
+    events_in_db = User.get_user_date()
     return render_template("edit.html", selected_date=session["user_date"], events=events_in_db)
 
 @app.route("/search", methods=["GET", "POST"])

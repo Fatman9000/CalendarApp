@@ -1,6 +1,7 @@
 
 import datetime
 import json
+from threading import Event
 import uuid
 
 from flask import session
@@ -38,8 +39,8 @@ class User(object):
         session["user_name"] = user_name
 
     @staticmethod
-    def get_user_date(selected_date):
-        return_date = db.calendarData.find_one({"$and": [{"username": session["user_name"]}, {"user_date.date" : {"$exists" : "true"}}]})
+    def get_user_date():
+        return_date = db.calendarData.find_one({"username": session["user_name"]})
         print(return_date)
         if return_date is not None:
             return(return_date["user_date"])
@@ -54,28 +55,22 @@ class User(object):
             return(user_entries)
 
     @staticmethod
-    def store_user_date(date, name):
-        # check = db.calendarData.find_one({"$and": [{"username": name}, {"user_date" : {date : []}}]})
-        # if check is not None:
-            db.calendarData.update_one({"username": name}, {"$push": {"user_date": [{"date" : date}]}})
-        
-        # print(db.calendarData.index_information())
-        # db.calendarData.create_index([('event_desc', 'text')])
-
+    def store_user_date(user_datetime, name, data="Empty"):
+        # check = db.calendarData.find_one({"$and": [{"username": name}, {"user_date" : {"date" : user_datetime}}]})
+        # if check is None:
+        db.calendarData.update_one({"username": name}, {"$push": {"user_date": {"date_time" : user_datetime, "event" : data}}})
     @staticmethod
     def store_user_time(name, time, data="Empty"):
-        user_date = session["user_date"]
-        # db.calendarData.update_one({"$and" : [{"username": name}, {"user_date.date" : user_date}],
-        #  {"$push": {f"user_date.": 
-        #                        {"event_time": time, "event_desc": data}}})
-        # db.calendarData.update_one}})
-
-    @staticmethod
-    def delete_user_time(name, date, times):
         selected_date = session["user_date"]
-        for item in times:
+        db.calendarData.update_one({"$and" : [{"username": name}, {"user_date.date" : selected_date}]}, {"$push": {"user_date": {"date" : selected_date}, "events" : [{data : time}]}})
+    
+    @staticmethod
+    def delete_user_time(name, events):
+        selected_date = session["user_date"]
+        for item in events:
+            print(item)
             item = item.replace("\'",'"')
             json_obj = json.loads(item)
             for key, value in json_obj.items():
-                db.calendarData.update_one({"username": name}, {"$pull": {f"user_date.{selected_date}" : {key: value}}})
+                db.calendarData.update_one({"username": name}, {"$pull": {"user_date" : {key: value}}})
             

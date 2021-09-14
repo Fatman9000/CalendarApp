@@ -4,13 +4,13 @@
     <div class="container-fluid">
         <div class="container-sm">
             {% if events is not none %}
-            <label for="date">Events for {{ selected_date }}</label><br>
+            <!-- <label for="date">Events for {{ selected_date }}</label><br> -->
             Click the X to remove an event
             <div class="form-label">
                 <label for="events">
                     {% for item in events %}
-                    <li class="lead">{{ item.events }} <button type="submit" class="btn-close" aria-label="Close"
-                            value="{{ item.events }}" id="remove_event" name="remove_event"></li>
+                    <li class="lead">{{ item }} <button type="submit" class="btn-close" aria-label="Close"
+                            value="{{ item }}" id="remove_event" name="remove_event"></li>
                     {% endfor %}
                 </label>
             </div>
@@ -40,7 +40,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="event_modal_label">Chose a time for your event:</h5>
-                    <input type="time" id="time" name="time" min="00:00" max="24:00">
+                    <input type="datetime-local" class="form-control" name="user_datetime" id="user_datetime">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -50,7 +50,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <input hidden id="date_input" value="{{ selected_date }}">
+                    <input hidden name="date_input" id="date_input" value="{{ selected_date }}">
                 </div>
                 
             </div>
