@@ -41,8 +41,8 @@ def date_edit():
     # session["user_date"] = request.form["user_datetime"]
     # my_var = request.form["user_datetime"] if request.form["user_datetime"] else None
     events_in_db = User.get_user_date()
-    print(events_in_db)
-    return render_template("edit.html", events=events_in_db)
+    print(events_in_db["user_date"])
+    return render_template("edit.html", events=events_in_db["user_date"])
 
       
         
@@ -58,7 +58,8 @@ def save():
         User.store_user_date(selected_date, session["user_name"], user_data)
         # User.store_user_time(session["user_name"], user_time, user_data)
     events_in_db = User.get_user_date()
-    return render_template("edit.html", selected_date=session["user_date"], events=events_in_db)
+
+    return render_template("edit.html", selected_date=selected_date, events=events_in_db["user_date"])
 
 @app.route("/search", methods=["GET", "POST"])
 def search():

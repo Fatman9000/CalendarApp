@@ -2,17 +2,27 @@
 {% block content %}
 <form action="/save" id="input-time" method="POST">
     <div class="container-fluid">
-        <div class="container-sm">
+        <div class="container-md">
             {% if events is not none %}
             <!-- <label for="date">Events for {{ selected_date }}</label><br> -->
             Click the X to remove an event
             <div class="form-label">
-                <label for="events">
-                    {% for item in events %}
-                    <li class="lead">{{ item }} <button type="submit" class="btn-close" aria-label="Close"
-                            value="{{ item }}" id="remove_event" name="remove_event"></li>
-                    {% endfor %}
-                </label>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>event description</th>
+                            <th>event date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in events %}
+                        <tr>
+                            <td><input value="{{ item['event'] }}" class="form-control event-input" id="description-{{ loop.index }}" name="event_description"></td>
+                            <td><input type="datetime-local" value="{{ item['date_time'] }}" class="form-control event-input" name="event_datetime" id="datetime-{{ loop.index }}"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -57,4 +67,12 @@
         </div>
     </div>
 </form>
+
 {% endblock content %}
+
+<script type="text/javascript">
+    let inputs = document.querySelectorAll(".event-input")
+    inputs.forEach(e => {
+        $(e).on("Click",location.href="/save")
+    })
+</script>

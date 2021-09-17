@@ -41,9 +41,9 @@ class User(object):
     @staticmethod
     def get_user_date():
         return_date = db.calendarData.find_one({"username": session["user_name"]})
-        print(return_date)
+        # print(return_date)
         if return_date is not None:
-            return(return_date["user_date"])
+            return(return_date)
 
     @staticmethod
     def search_user_entries(search_term):
@@ -56,9 +56,9 @@ class User(object):
 
     @staticmethod
     def store_user_date(user_datetime, name, data="Empty"):
-        # check = db.calendarData.find_one({"$and": [{"username": name}, {"user_date" : {"date" : user_datetime}}]})
+        # check = db.calendarData.find_one({"$and": [{"username": name}, {"user_date.date" : {user_datetime}}, {"user_date.event" : {data}}]})
         # if check is None:
-        db.calendarData.update_one({"username": name}, {"$push": {"user_date": {"date_time" : user_datetime, "event" : data}}})
+            db.calendarData.update_one({"username": name}, {"$push": {"user_date": {"date_time" : user_datetime, "event" : data}}})
     @staticmethod
     def store_user_time(name, time, data="Empty"):
         selected_date = session["user_date"]
@@ -66,7 +66,7 @@ class User(object):
     
     @staticmethod
     def delete_user_time(name, events):
-        selected_date = session["user_date"]
+        # selected_date = session["user_date"]
         for item in events:
             print(item)
             item = item.replace("\'",'"')
