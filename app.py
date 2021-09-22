@@ -41,8 +41,8 @@ def date_edit():
     # session["user_date"] = request.form["user_datetime"]
     # my_var = request.form["user_datetime"] if request.form["user_datetime"] else None
     events_in_db = User.get_user_date()
-    print(events_in_db["user_date"])
-    return render_template("edit.html", events=events_in_db["user_date"])
+    events_in_db = [x for x in events_in_db]
+    return render_template("edit.html", events=events_in_db)
 
       
         
@@ -52,30 +52,22 @@ def date_edit():
 def save():
     user_data = request.form["data"]
     selected_date = request.form["user_datetime"]
-    to_be_removed = request.form.getlist("remove_event")
-    User.delete_user_time(session["user_name"], to_be_removed)
+    try:
+        to_be_removed = request.form["remove_event"]
+        User.delete_user_time(to_be_removed)
+    except:
+        pass
     if user_data:
-        User.store_user_date(selected_date, session["user_name"], user_data)
-        # User.store_user_time(session["user_name"], user_time, user_data)
+        User.store_user_date(selected_date, user_data)
     events_in_db = User.get_user_date()
 
-    return render_template("edit.html", selected_date=selected_date, events=events_in_db["user_date"])
+    return render_template("edit.html", selected_date=selected_date, events=events_in_db)
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
     search_term = request.form["search_term"]
     result = User.search_user_entries(search_term)
-    # print(result)
-    # del results["_id"]
-    # del results["username"]
-    # matching_results = {}
-    # print(results)
-
-    # for k in results:
-    #     for v in results[k]:
-    #         if search_term in v.values():
-    #             print(search_term,v)
-    #             matching_results.setdefault(k,v)
-    # print(matching_results)
+    result = [x for x in result]
+    print(result)
 
     return render_template("search.html", search_results=result)

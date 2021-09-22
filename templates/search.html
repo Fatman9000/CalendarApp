@@ -1,8 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
 {% if search_results is not none %}
-    {% for result in search_results %}
-        <li style="margin-left: 20px;">{{result}}, {{ search_results[result] }}</li>
-    {% endfor %}
+<div class="container-fluid">
+    <div class="container-md">
+        <div class="form-label">
+            <table>
+                <thead>
+                    <tr>
+                        <th>event description</th>
+                        <th>event date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in search_results %}
+                    <tr>
+                        <td><input value="{{ result.event }}" class="form-control event-input"
+                                id="description-{{ loop.index }}" name="event_description"></td>
+                        <td><input type="datetime-local" value="{{ result.date_time }}" class="form-control event-input"
+                                name="event_datetime" id="datetime-{{ loop.index }}"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endif %}
 {% endblock content %}

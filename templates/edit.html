@@ -19,6 +19,7 @@
                         <tr>
                             <td><input value="{{ item['event'] }}" class="form-control event-input" id="description-{{ loop.index }}" name="event_description"></td>
                             <td><input type="datetime-local" value="{{ item['date_time'] }}" class="form-control event-input" name="event_datetime" id="datetime-{{ loop.index }}"></td>
+                            <td><button type="submit" class="btn-close" aria-label="Close" value="{{ item._id }}" id="remove_event" name="remove_event"></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -26,16 +27,9 @@
             </div>
         </div>
     </div>
-    {% else %}
-    </div>
-    <div class="container-fluid">
-        <div class="container-sm">
-            <div class="form-label">
-                <label for="date">No events for {{ selected_date }}</label>
-            </div>
-        </div>
-    </div>
+<!-- </form> -->
     {% endif %}
+<!-- <form action="/save" id="create-new" method="POST"> -->
     <div class="container-fluid">
         <div class="container-sm">
             <div class="form-label">
