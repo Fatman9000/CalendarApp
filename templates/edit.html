@@ -1,72 +1,68 @@
 {% extends 'base.html' %}
 {% block content %}
-<form action="/save" id="input-time" method="POST">
-    <div class="container-fluid">
-        <div class="container-md">
-            {% if events is not none %}
-            <!-- <label for="date">Events for {{ selected_date }}</label><br> -->
-            Click the X to remove an event
-            <div class="form-label">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>event description</th>
-                            <th>event date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in events %}
-                        <tr>
-                            <td><input value="{{ item['event'] }}" class="form-control event-input" id="description-{{ loop.index }}" name="event_description"></td>
-                            <td><input type="datetime-local" value="{{ item['date_time'] }}" class="form-control event-input" name="event_datetime" id="datetime-{{ loop.index }}"></td>
-                            <td><button type="submit" class="btn-close" aria-label="Close" value="{{ item._id }}" id="remove_event" name="remove_event"></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-<!-- </form> -->
+<div class="container-fluid">
+    {% if events is not none %}
+    <form action="/save" id="input-time" method="POST">
+
+        Click the X to remove an event
+        <table>
+            <thead>
+                <tr>
+                    <th>event description</th>
+                    <th>event date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in events %}
+                <tr>
+                    <td><input value="{{ item['event'] }}" class="form-control event-input"
+                            id="description-{{ loop.index }}" name="event_description"></td>
+                    <td><input type="datetime-local" value="{{ item['date_time'] }}" class="form-control event-input"
+                            name="event_datetime" id="datetime-{{ loop.index }}">
+                    </td>
+                    <td><button type="submit" class="btn-close" aria-label="Close" value="{{ item._id }}"
+                            id="remove_event" name="remove_event"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">
+            Commit changes
+        </button>
+
+    </form>
+
     {% endif %}
-<!-- <form action="/save" id="create-new" method="POST"> -->
-    <div class="container-fluid">
-        <div class="container-sm">
-            <div class="form-label">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event_modal">
-                    Create new event
-                </button>
-            </div>
-        </div>
-    </div>
+
+
     <div class="modal fade" id="event_modal" tabindex="-1" aria-labelledby="event_modal_label" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="event_modal_label">Chose a time for your event:</h5>
-                    <input type="datetime-local" class="form-control" name="user_datetime" id="user_datetime">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <textarea class="form-control" id="data" name="data" placeholder="Enter event details here"
-                        style="width: 400px;"></textarea>
+                    <form action="/save" method="POST">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="event_modal_label">Chose a time for your event:</span>
+                            <input type="datetime-local" class="form-control" name="user_datetime" id="user_datetime">
+                        </div>
+                        <textarea class="form-control" id="data" name="data" placeholder="Enter event details here"
+                            style="width: 100%;"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save</button>
                     <input hidden name="date_input" id="date_input" value="{{ selected_date }}">
+                    </form>
                 </div>
-                
             </div>
         </div>
     </div>
-</form>
 
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event_modal"
+        style="margin-top: 25px;">
+        Create new event
+    </button>
+</div>
 {% endblock content %}
-
-<script type="text/javascript">
-    let inputs = document.querySelectorAll(".event-input")
-    inputs.forEach(e => {
-        $(e).on("Click",location.href="/save")
-    })
-</script>

@@ -60,10 +60,9 @@ class User(object):
         # print(datetime_object)
         db.calendarData.insert_one({"date_time" : user_datetime, "event" : data})
    
-    # @staticmethod
-    # def update_datetime(name, time, data="Empty"):
-    #     selected_date = session["user_date"]
-    #     db.calendarData.update_one({"$and" : [{"username": name}, {"user_date.date" : selected_date}]}, {"$push": {"user_date": {"date" : selected_date}, "events" : [{data : time}]}})
+    @staticmethod
+    def update_datetime(event_id, user_datetime, data="Empty"):
+        db.calendarData.update_one({"_id" : ObjectId(event_id)},{"date_time" : user_datetime, "event" : data})
     
     @staticmethod
     def delete_user_time(event_id):

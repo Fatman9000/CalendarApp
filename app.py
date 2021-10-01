@@ -16,19 +16,19 @@ app.config["SECRET_KEY"] = "secret_key"
 #     session["userdata"] = calendar_app.pull_user_data()
 
 
-@app.route("/")
-def home_page():
-    return render_template("index.html")
+# @app.route("/")
+# def home_page():
+#     return render_template("index.html")
 
 
-@app.route("/validate", methods=["POST"])
-def user_validation():
-    user_name = request.form["user_name"]
-    User.login(user_name)
-    if User.login_valid(user_name):
-        return redirect("/calendar")
-    else:
-        return redirect("/")
+# @app.route("/validate", methods=["POST"])
+# def user_validation():
+#     user_name = request.form["user_name"]
+#     User.login(user_name)
+#     if User.login_valid(user_name):
+#         return redirect("/calendar")
+#     else:
+#         return redirect("/")
 
 
 # @app.route("/calendar", methods=["GET"])
@@ -36,7 +36,7 @@ def user_validation():
 #     return render_template("calendar.html")
 
 
-@app.route("/calendar", methods=["GET", "POST"])
+@app.route("/calendar", methods=["GET"])
 def date_edit():
     # session["user_date"] = request.form["user_datetime"]
     # my_var = request.form["user_datetime"] if request.form["user_datetime"] else None
@@ -48,20 +48,18 @@ def date_edit():
         
 
 
-@app.route("/save", methods=["GET", "POST"])
+@app.route("/save", methods=["POST"])
 def save():
-    user_data = request.form["data"]
-    selected_date = request.form["user_datetime"]
-    try:
-        to_be_removed = request.form["remove_event"]
+    user_data = request.form.get("data")
+    selected_date = request.form.get("user_datetime")
+    to_be_removed = request.form.get("remove_event")
+    if to_be_removed:
         User.delete_user_time(to_be_removed)
-    except:
-        pass
     if user_data:
         User.store_user_date(selected_date, user_data)
     events_in_db = User.get_user_date()
 
-    return render_template("edit.html", selected_date=selected_date, events=events_in_db)
+    return redirect("/calendar")
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
