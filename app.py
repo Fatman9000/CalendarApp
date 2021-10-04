@@ -52,20 +52,36 @@ def date_edit():
 def save():
     user_data = request.form.get("data")
     selected_date = request.form.get("user_datetime")
-    to_be_removed = request.form.get("remove_event")
-    if to_be_removed:
-        User.delete_user_time(to_be_removed)
+    # to_be_removed = request.form.get("remove_event")
+    # if to_be_removed:
+    #     User.delete_user_time(to_be_removed)
     if user_data:
         User.store_user_date(selected_date, user_data)
     events_in_db = User.get_user_date()
 
     return redirect("/calendar")
 
+@app.route("/delete", methods=["POST"])
+def delete_event():
+    to_be_removed = request.form.get("remove_event")
+    if to_be_removed:
+        User.delete_user_time(to_be_removed)
+    return redirect("/calendar")
+
+
+@app.route("/update", methods=["POST"])
+def update_event():
+    to_be_updated = request.form.get("event_description")
+    print(to_be_updated)
+    # User.update_datetime()
+    return redirect("/calendar")
+
 @app.route("/search", methods=["GET", "POST"])
 def search():
-    search_term = request.form["search_term"]
-    result = User.search_user_entries(search_term)
-    result = [x for x in result]
-    print(result)
-
-    return render_template("search.html", search_results=result)
+    search_term = request.form.get("search_term")
+    if search_term:
+        result = User.search_user_entries(search_term)
+        result = [x for x in result]
+        print(result)
+        return render_template("search.html", search_results=result)
+    
