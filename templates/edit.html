@@ -14,22 +14,17 @@
             <tbody>
                 {% for item in events %}
                 <tr>
-                    <td><input value="{{ item['event'] }}" class="form-control event-input"
-                            id="description-{{ loop.index }}" name="event_description"></td>
-                    <td><input type="datetime-local" value="{{ item['date_time'] }}" class="form-control event-input"
-                            name="event_datetime" id="datetime-{{ loop.index }}"></td>
+                    <td><a value="{{ item['event'] }}" class="event-input"
+                            id="description-{{ loop.index }}" name="event_description" href="/update/{{ item._id }}">{{ item['event'] }}</a></td>
+                    <td><a value="{{ item['date_time'] }}" class="event-input"
+                            name="event_datetime" id="datetime-{{ loop.index }}" href="/update/{{ item._id }}">{{ item['date_time'] }}</a></td>
                     <td><button type="submit" class="btn-close" aria-label="Close" value="{{ item._id }}"
-                            id="remove_event" name="remove_event"></td>
+                            id="remove_event" name="remove_event">
+                        </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </form>
-
-    <form action="/update" method="POST">
-        <button type="submit" class="btn btn-primary">
-            Commit changes
-        </button>
     </form>
     
 

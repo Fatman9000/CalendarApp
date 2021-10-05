@@ -5,7 +5,7 @@ import json
 from user import User
 from flask import (Flask, flash, redirect, render_template, request, session,
                    url_for)
-from pymongo import MongoClient
+from pymongo import MongoClient, results
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret_key"
@@ -52,9 +52,6 @@ def date_edit():
 def save():
     user_data = request.form.get("data")
     selected_date = request.form.get("user_datetime")
-    # to_be_removed = request.form.get("remove_event")
-    # if to_be_removed:
-    #     User.delete_user_time(to_be_removed)
     if user_data:
         User.store_user_date(selected_date, user_data)
     events_in_db = User.get_user_date()
@@ -69,12 +66,17 @@ def delete_event():
     return redirect("/calendar")
 
 
-@app.route("/update", methods=["POST"])
-def update_event():
-    to_be_updated = request.form.get("event_description")
-    print(to_be_updated)
-    # User.update_datetime()
-    return redirect("/calendar")
+@app.route("/update/<event_id>", methods=["GET", "POST"])
+def update_event(event_id):
+    if request.method == "GET":
+        result = User.get_by_id(event_id)
+        return render_template("update.html", result=result)
+    if request.method == "POST":
+        event_datetime = request.form.get("event_datetime")
+        event_description = request.form.get("event_description")
+        User.update_datetime(event_id, event_datetime, event_description)
+        return redirect("/calendar")
+        
 
 @app.route("/search", methods=["GET", "POST"])
 def search():

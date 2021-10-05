@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/update/{{ result._id }}" id="inputCalendar" method="POST">
+    <div class="container-fluid">
+        <table>
+            <thead>
+                <tr>
+                    <th>event description</th>
+                    <th>event date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input value="{{ result.event }}" class="form-control event-input" id="event_description"
+                            name="event_description"></td>
+                    <td><input type="datetime-local" value="{{ result.date_time }}" class="form-control event-input"
+                            name="event_datetime" id="event_datetime"></td>
+                    
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">
+            Commit changes
+        </button>
+    </div>
+</form>
+{% endblock %}

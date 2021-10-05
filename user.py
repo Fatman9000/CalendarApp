@@ -40,6 +40,13 @@ class User(object):
         session["user_name"] = user_name
 
     @staticmethod
+    def get_by_id(event_id):
+        return_date = db.calendarData.find_one({"_id" : ObjectId(event_id)})
+        # print(return_date[0])
+        if return_date is not None:
+            return(return_date)
+    
+    @staticmethod
     def get_user_date():
         return_date = db.calendarData.find({"event" : {"$exists": True}})
         # print(return_date)
@@ -61,8 +68,9 @@ class User(object):
         db.calendarData.insert_one({"date_time" : user_datetime, "event" : data})
    
     @staticmethod
-    def update_datetime(event_id, user_datetime, data="Empty"):
-        db.calendarData.update_one({"_id" : ObjectId(event_id)},{"date_time" : user_datetime, "event" : data})
+    def update_datetime(event_id, user_datetime, data):
+        pass
+        db.calendarData.update({"_id" : ObjectId(event_id)},{"date_time" : user_datetime, "event" : data})
     
     @staticmethod
     def delete_user_time(event_id):
