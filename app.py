@@ -16,19 +16,19 @@ app.config["SECRET_KEY"] = "secret_key"
 #     session["userdata"] = calendar_app.pull_user_data()
 
 
-# @app.route("/")
-# def home_page():
-#     return render_template("index.html")
+@app.route("/")
+def home_page():
+    return render_template("index.html")
 
 
-# @app.route("/validate", methods=["POST"])
-# def user_validation():
-#     user_name = request.form["user_name"]
-#     User.login(user_name)
-#     if User.login_valid(user_name):
-#         return redirect("/calendar")
-#     else:
-#         return redirect("/")
+@app.route("/validate", methods=["POST"])
+def user_validation():
+    user_name = request.form["user_name"]
+    User.login(user_name)
+    if User.login_valid(user_name):
+        return redirect("/calendar")
+    else:
+        return redirect("/")
 
 
 # @app.route("/calendar", methods=["GET"])
@@ -42,10 +42,12 @@ def date_edit():
     # my_var = request.form["user_datetime"] if request.form["user_datetime"] else None
     events_in_db = User.get_user_date()
     events_in_db = [x for x in events_in_db]
-    return render_template("edit.html", events=events_in_db)
+    if events_in_db == []:
+        return render_template("edit.html", events=None)
+    else:
+        return render_template("edit.html", events=events_in_db)
 
-      
-        
+    
 
 
 @app.route("/save", methods=["POST"])

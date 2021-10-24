@@ -21,19 +21,22 @@ class User(object):
     def get_by_name(cls, user_name):
         data = db.calendarData.find_one({"username": user_name})
         if data is not None:
-            return (data["username"])
+            return (data)
 
     @staticmethod
     def create_user(user_name):
-        db.calendarData.insert_one({"username": user_name})
+        user_id = uuid.uuid4()
+        db.calendarData.insert_one({"username": user_name, "uuid" : user_id})
 
     @staticmethod
     def login_valid(user_name):
         user = User.get_by_name(user_name)
+        print(user)
         if user is None:
             User.create_user(user_name)
             user = User.get_by_name(user_name)
-        return user == user_name
+        session["uuid"] = user["uuid"]
+        return user["username"] == user_name
 
     @staticmethod
     def login(user_name):
@@ -48,7 +51,9 @@ class User(object):
     
     @staticmethod
     def get_user_date():
-        return_date = db.calendarData.find({"event" : {"$exists": True}})
+        return_date = db.calendarData.find({"$and" :[{"event" : {"$exists": True}, "creator_id": session["uuid"]}]})
+        # return_date = db.calendarData.find({"event" : {"$exists": True}})
+
         # print(return_date)
         if return_date is not None:
             return(return_date)
@@ -56,7 +61,7 @@ class User(object):
     @staticmethod
     def search_user_entries(search_term):
         print(search_term)
-        user_entries = db.calendarData.find({"$text":{"$search": search_term}})
+        user_entries = db.calendarData.find({"creator_id" : session["uuid"], "$text":{"$search": search_term}})
         print(user_entries)
         if user_entries is not None:
             return(user_entries)
@@ -65,12 +70,12 @@ class User(object):
     def store_user_date(user_datetime, data="Empty"):
         # datetime_object = datetime.datetime.strptime(user_datetime, )
         # print(datetime_object)
-        db.calendarData.insert_one({"date_time" : user_datetime, "event" : data})
+        db.calendarData.insert_one({"date_time" : user_datetime, "event" : data, "creator_id" : session["uuid"]})
    
     @staticmethod
     def update_datetime(event_id, user_datetime, data):
         pass
-        db.calendarData.update({"_id" : ObjectId(event_id)},{"date_time" : user_datetime, "event" : data})
+        db.calendarData.update({"_id" : ObjectId(event_id)},{"date_time" : user_datetime, "event" : data, "creator_id" : session["uuid"]})
     
     @staticmethod
     def delete_user_time(event_id):

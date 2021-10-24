@@ -2,33 +2,38 @@
 {% block content %}
 <div class="container-fluid">
     {% if events is not none %}
-    <form action="/delete" id="input-time" method="POST">
-        Click the X to remove an event
-        <table id="event_table" name="event_table">
-            <thead>
-                <tr>
-                    <th>event description</th>
-                    <th>event date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in events %}
-                <tr>
-                    <td><a value="{{ item['event'] }}" class="event-input"
-                            id="description-{{ loop.index }}" name="event_description" href="/update/{{ item._id }}">{{ item['event'] }}</a></td>
-                    <td><a value="{{ item['date_time'] }}" class="event-input"
-                            name="event_datetime" id="datetime-{{ loop.index }}" href="/update/{{ item._id }}">{{ item['date_time'] }}</a></td>
-                    <td><button type="submit" class="btn-close" aria-label="Close" value="{{ item._id }}"
-                            id="remove_event" name="remove_event">
-                        </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </form>
-    
-
+    <div class="row" style="padding-top: 25px;">
+        <div class="col-4">
+            <form action="/delete" id="input-time" method="POST">
+                Click the X to remove an event
+                <table id="event_table" name="event_table">
+                    <thead>
+                        <tr>
+                            <th>event description</th>
+                            <th>event date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in events %}
+                        <tr>
+                            <td><a value="{{ item['event'] }}" class="event-input" id="description-{{ loop.index }}"
+                                    name="event_description" href="/update/{{ item._id }}">{{ item['event'] }}</a></td>
+                            <td><a value="{{ item['date_time'] }}" class="event-input" name="event_datetime"
+                                    id="datetime-{{ loop.index }}" href="/update/{{ item._id }}">{{ item['date_time']
+                                    }}</a>
+                            </td>
+                            <td><button type="submit" class="btn-close" aria-label="Close" value="{{ item._id }}"
+                                    id="remove_event" name="remove_event">
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
     {% endif %}
+
 
 
     <div class="modal fade" id="event_modal" tabindex="-1" aria-labelledby="event_modal_label" aria-hidden="true">
@@ -40,10 +45,11 @@
                     <form action="/save" method="POST">
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="event_modal_label">Chose a time for your event:</span>
-                            <input type="datetime-local" class="form-control" name="user_datetime" id="user_datetime">
+                            <input type="datetime-local" class="form-control" name="user_datetime" id="user_datetime"
+                                required>
                         </div>
                         <textarea class="form-control" id="data" name="data" placeholder="Enter event details here"
-                            style="width: 100%;"></textarea>
+                            style="width: 100%;" required></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -55,10 +61,13 @@
         </div>
     </div>
 
-
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event_modal"
-        style="margin-top: 25px;">
-        Create new event
-    </button>
+    <div class="row">
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event_modal"
+                style="margin-top: 25px;" name="create_btn" id="create_btn">
+                Create new event
+            </button>
+        </div>
+    </div>
 </div>
 {% endblock content %}
