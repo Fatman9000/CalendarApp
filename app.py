@@ -11,11 +11,6 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret_key"
 
 
-# @app.before_first_request
-# def initialize_userdata():
-#     session["userdata"] = calendar_app.pull_user_data()
-
-
 @app.route("/")
 def home_page():
     return render_template("index.html")
@@ -31,11 +26,6 @@ def user_validation():
         return redirect("/")
 
 
-# @app.route("/calendar", methods=["GET"])
-# def date_pick():
-#     return render_template("calendar.html")
-
-
 @app.route("/calendar", methods=["GET"])
 def date_edit():
     # session["user_date"] = request.form["user_datetime"]
@@ -47,8 +37,6 @@ def date_edit():
     else:
         return render_template("edit.html", events=events_in_db)
 
-    
-
 
 @app.route("/save", methods=["POST"])
 def save():
@@ -57,8 +45,8 @@ def save():
     if user_data:
         User.store_user_date(selected_date, user_data)
     events_in_db = User.get_user_date()
-
     return redirect("/calendar")
+
 
 @app.route("/delete", methods=["POST"])
 def delete_event():
@@ -87,5 +75,5 @@ def search():
         result = User.search_user_entries(search_term)
         result = [x for x in result]
         print(result)
-        return render_template("search.html", search_results=result)
+        return render_template("search.html", events=result)
     
