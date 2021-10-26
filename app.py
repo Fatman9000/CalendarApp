@@ -23,7 +23,7 @@ def user_validation():
 
 @app.route("/calendar", methods=["GET"])
 def date_edit():
-    events_in_db = User.get_user_date()
+    events_in_db = User.get_user_current_dates()
     events_in_db = [x for x in events_in_db]
     if events_in_db == []:
         return render_template("edit.html", events=None)
@@ -67,5 +67,4 @@ def search():
     if search_term:
         result = User.search_user_entries(search_term)
         result = [x for x in result]
-        
         return render_template("search.html", events=result)

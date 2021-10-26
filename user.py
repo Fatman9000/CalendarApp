@@ -1,7 +1,8 @@
+from datetime import datetime, timedelta
 import uuid
 from bson.objectid import ObjectId
 from flask import session
-from pymongo import MongoClient, TEXT
+from pymongo import MongoClient, TEXT, mongo_client
 
 client = MongoClient("mongodb://localhost:27017")
 db = client.local
@@ -49,6 +50,16 @@ class User(object):
             return(return_date)
 
     @staticmethod
+    def get_user_current_dates():
+        start = datetime.now()
+        end = datetime.now() + timedelta(days=1)
+        print(start, end)
+        return_date = db.calendarData.find(
+            {"$and": [{"date_time" : {"$gte" : start, "$lt": end}},{"event": {"$exists": True}, "creator_id": session["uuid"]}]})
+        if return_date:
+            return(return_date)
+
+    @staticmethod
     def search_user_entries(search_term):
         user_entries = db.calendarData.find(
             {"creator_id": session["uuid"], "$text": {"$search": search_term}})
@@ -58,7 +69,7 @@ class User(object):
     @staticmethod
     def store_user_date(user_datetime, data="Empty"):
         db.calendarData.insert_one(
-            {"date_time": user_datetime, "event": data, "creator_id": session["uuid"]})
+            {"date_time": datetime.fromisoformat(user_datetime), "event": data, "creator_id": session["uuid"]})
 
     @staticmethod
     def update_datetime(event_id, user_datetime, data):
