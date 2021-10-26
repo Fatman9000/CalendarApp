@@ -1,10 +1,5 @@
-from collections import UserDict
-import datetime
-import re
-import json
 from user import User
-from flask import (Flask, flash, redirect, render_template, request, session,
-                   url_for)
+from flask import (Flask, redirect, render_template, request)
 from pymongo import MongoClient, results
 
 app = Flask(__name__)
@@ -28,8 +23,6 @@ def user_validation():
 
 @app.route("/calendar", methods=["GET"])
 def date_edit():
-    # session["user_date"] = request.form["user_datetime"]
-    # my_var = request.form["user_datetime"] if request.form["user_datetime"] else None
     events_in_db = User.get_user_date()
     events_in_db = [x for x in events_in_db]
     if events_in_db == []:
@@ -66,7 +59,7 @@ def update_event(event_id):
         event_description = request.form.get("event_description")
         User.update_datetime(event_id, event_datetime, event_description)
         return redirect("/calendar")
-        
+
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
@@ -74,6 +67,4 @@ def search():
     if search_term:
         result = User.search_user_entries(search_term)
         result = [x for x in result]
-        print(result)
         return render_template("search.html", events=result)
-    
