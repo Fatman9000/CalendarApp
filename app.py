@@ -67,4 +67,5 @@ def search():
     if search_term:
         result = User.search_user_entries(search_term)
         result = [x for x in result]
+        
         return render_template("search.html", events=result)
